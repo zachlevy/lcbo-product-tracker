@@ -9,11 +9,10 @@ class TrackProduct(models.Model):
 
 class Product(models.Model):
 	lcbo_id = models.IntegerField(default=0)
-	name = models.CharField(max_length=200)
 	name = models.CharField(max_length=200) #Sage Cranberry Blackcurrant
 	tags = models.CharField(max_length=1000) #sage cranberry blackcurrant ready to drinkcoolers ready-to-drinkcoolers readytodrinkcoolers one pour cocktails canada ontario mixology bottle
-	is_dead = models.BooleanField(default=False) #false
-	is_discontinued = models.BooleanField(default=False) #false
+	is_dead = models.NullBooleanField(default=False) #false
+	is_discontinued = models.NullBooleanField(default=False) #false
 	price_in_cents = models.IntegerField(default=0) #1395
 	regular_price_in_cents = models.IntegerField(default=0) #1395
 	limited_time_offer_savings_in_cents = models.IntegerField(default=0) #0
@@ -38,12 +37,12 @@ class Product(models.Model):
 	sugar_content = models.CharField(max_length=200) #null
 	producer_name = models.CharField(max_length=200) #Sage Mixology
 	released_on = models.CharField(max_length=200) #null
-	has_value_added_promotion = models.BooleanField(default=False) #false
-	has_limited_time_offer = models.BooleanField(default=False) #false
-	has_bonus_reward_miles = models.BooleanField(default=False) #false
-	is_seasonal = models.BooleanField(default=False) #false
-	is_vqa = models.BooleanField(default=False) #false
-	is_kosher = models.BooleanField(default=False) #false
+	has_value_added_promotion = models.NullBooleanField(default=False) #false
+	has_limited_time_offer = models.NullBooleanField(default=False) #false
+	has_bonus_reward_miles = models.NullBooleanField(default=False) #false
+	is_seasonal = models.NullBooleanField(default=False) #false
+	is_vqa = models.NullBooleanField(default=False) #false
+	is_kosher = models.NullBooleanField(default=False) #false
 	value_added_promotion_description = models.CharField(max_length=2000) #null
 	description = models.CharField(max_length=2000) #null
 	serving_suggestion = models.CharField(max_length=2000) #null
@@ -56,7 +55,7 @@ class Product(models.Model):
 	tertiary_category = models.CharField(max_length=200) #Fruity
 	sugar_in_grams_per_liter = models.CharField(max_length=200) #null
 	clearance_sale_savings_in_cents = models.IntegerField(default=0) #0
-	has_clearance_sale = models.BooleanField(default=False) #false
+	has_clearance_sale = models.NullBooleanField(default=False) #false
 	product_no = models.IntegerField(default=0) #372078
 	created = models.DateTimeField(auto_now_add=True)
 

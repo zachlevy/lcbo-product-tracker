@@ -3,10 +3,11 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'lcboproducts.views.index', name='index'),
-    url(r'^$', include('producttracker.urls')),
+from producttracker import views
 
-    url(r'^admin/', include(admin.site.urls)),
+urlpatterns = patterns('',
+	url(r'^$', views.index, name='index'),
+	url(r'^update-product/(?P<product_id>.*)$', views.update_product, name="update_product"),
+	url(r'^product/(?P<product_id>.*)$', views.product, name="product"),
+	url(r'^admin/', include(admin.site.urls)),
 )
