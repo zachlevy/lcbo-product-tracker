@@ -1,6 +1,7 @@
 Django==1.6.5
 Facebook==0.0
 South==1.0
+gunicorn==18.0
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-bootstrap-sass==0.0.6-alpha
