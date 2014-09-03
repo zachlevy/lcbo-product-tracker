@@ -63,5 +63,6 @@ class StoreInventory(models.Model):
 	lcbo_id = models.IntegerField(default=0)
 	store_no = models.IntegerField(default=0)
 	quantity = models.IntegerField(default=0)
-	updated_on = models.DateField()
+	updated_on = models.CharField(max_length=200)
+	updated_at = models.CharField(max_length=200)
 	created = models.DateTimeField(auto_now_add=True)

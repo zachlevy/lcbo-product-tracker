@@ -5,7 +5,6 @@ import datetime
 import string
 import urllib2
 import json
-from django.utils import simplejson
 from producttracker.models import TrackProduct, Product, StoreInventory
 
 # Create your views here.
@@ -14,9 +13,33 @@ def index(request):
 
 def product(request, product_id):
 	product = Product.objects.get(lcbo_id=product_id)
-	return HttpResponse("Product" + str(product.id))
+	inventory = StoreInventory.objects.filter(lcbo_id=product_id)
+	for store in inventory:
+		print store.id
+	return HttpResponse("Product updated: " + str(product.updated_at))
+
+def update_inventory(request, product_id):
+	json_string = urllib2.urlopen('http://lcboapi.com/products/' + product_id + "/inventories?per_page=100")
+	data = json.load(json_string)
+	#print data['result']['product_id']
+	'''
+	for key in data['result']:
+		print key
+		print data['result'][key]
+	'''
+	for store in data['result']:
+		si = StoreInventory(
+			lcbo_id = store['product_id'],
+			store_no = store['store_id'],
+			quantity = store['quantity'],
+			updated_on = store['updated_on'],
+			updated_at = store['updated_at'],
+		)
+		si.save()
+	return HttpResponse("updated inventory: ")
 
 def update_product(request, product_id):
+	last = Product.objects.filter(lcbo_id=product_id).order_by('-id')[0]
 	json_string = urllib2.urlopen('http://lcboapi.com/products/' + product_id)
 	data = json.load(json_string)
 	#data['result'] = data['result']
@@ -50,6 +73,11 @@ def update_product(request, product_id):
 		data['result']['style'] = ""
 	if (data['result']['sugar_in_grams_per_liter'] is None):
 		data['result']['sugar_in_grams_per_liter'] = ""
+
+	#check if the query is new
+	if (data['result']['updated_at'] == last.updated_at):
+		return HttpResponse("already recent as of " + data['result']['updated_at'])
+
 	p = Product(
 		lcbo_id = data['result']['id'],
 		name = data['result']['name'],
