@@ -6,10 +6,10 @@ dj-static==0.0.6
 django-bootstrap-sass==0.0.6-alpha
 django-less==0.7.2
 django-static-precompiler==0.7
+psycopg2==2.5.4
 python-dateutil==2.2
 requests==2.3.0
 six==1.7.3
 static3==0.5.1
 stripe==1.19.0
 wsgiref==0.1.2
-psycopg2==2.5.1
