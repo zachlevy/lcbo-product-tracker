@@ -27,15 +27,19 @@ def update_inventory(request, product_id):
 		print key
 		print data['result'][key]
 	'''
+	save_errors = {}
 	for store in data['result']:
 		si = StoreInventory(
 			lcbo_id = store['product_id'],
 			store_no = store['store_id'],
-			quantity = store['quantity'],
-			updated_on = store['updated_on'],
+			quantity = store['quantity'] if store['quantity'] else 0,
+			updated_on = store['updated_on'] if store['updated_on'] else "",
 			updated_at = store['updated_at'] if store['updated_at'] else "",
 		)
-		si.save()
+		try:
+			si.save() # Could throw exception
+		except:
+			print "store" + si.store_id + "errored"
 	return HttpResponse("updated inventory: ")
 
 def update_product(request, product_id):
