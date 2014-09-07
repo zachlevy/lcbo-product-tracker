@@ -33,7 +33,7 @@ def update_inventory(request, product_id):
 			store_no = store['store_id'],
 			quantity = store['quantity'],
 			updated_on = store['updated_on'],
-			updated_at = store['updated_at'],
+			updated_at = store['updated_at'] if store['updated_at'] else "",
 		)
 		si.save()
 	return HttpResponse("updated inventory: ")
