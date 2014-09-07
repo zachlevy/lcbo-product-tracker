@@ -39,7 +39,7 @@ def update_inventory(request, product_id):
 	return HttpResponse("updated inventory: ")
 
 def update_product(request, product_id):
-	#remove #last = Product.objects.filter(lcbo_id=product_id).order_by('-id')[0]
+	last = Product.objects.filter(lcbo_id=product_id).order_by('-id')[0]
 	json_string = urllib2.urlopen('http://lcboapi.com/products/' + product_id)
 	data = json.load(json_string)
 	#data['result'] = data['result']
@@ -75,8 +75,8 @@ def update_product(request, product_id):
 		data['result']['sugar_in_grams_per_liter'] = ""
 
 	#check if the query is new
-	# remove if (data['result']['updated_at'] == last.updated_at):
-	# remove	return HttpResponse("already recent as of " + data['result']['updated_at'])
+	if (data['result']['updated_at'] == last.updated_at):
+		return HttpResponse("already recent as of " + data['result']['updated_at'])
 
 	p = Product(
 		lcbo_id = data['result']['id'],
