@@ -39,7 +39,7 @@ def update_inventory(request, product_id):
 		try:
 			si.save() # Could throw exception
 		except:
-			print "store" + si.store_no + "errored"
+			print "store" + str(si.store_no) + "errored"
 	return HttpResponse("updated inventory: ")
 
 def update_product(request, product_id):
