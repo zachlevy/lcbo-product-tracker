@@ -37,6 +37,7 @@
 				<tr>
 					<th>Store Number</th>
 					<th>Quantity</th>
+					<th>Updated on</th>
 				</tr>
 			</thead>
 		<tbody>
@@ -44,6 +45,9 @@
 		<tr>
 			<td>{{ store.store_no }}</td>
 			<td>{{ store.quantity }}</td>
+			<td>
+				{{ store.updated_on }}
+			</td>
 		</tr>
     	{% endfor %}
     	<p></p>

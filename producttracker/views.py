@@ -15,7 +15,7 @@ def index(request):
 def product(request, product_id):
 	product = Product.objects.filter(lcbo_id=product_id).latest("updated_at")
 	inventory = StoreInventory.objects.filter(lcbo_id=product_id).distinct('store_no')
-	inventory_sum = StoreInventory.objects.aggregate(Sum('quantity')).get('quantity__sum')
+	inventory_sum = StoreInventory.objects.distinct('store_no').aggregate(Sum('quantity')).get('quantity__sum')
 	updated = StoreInventory.objects.filter(lcbo_id=product_id).latest("updated_at")
 	return render(request, "html/product.html", {
         "product" : product,
