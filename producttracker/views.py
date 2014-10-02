@@ -6,17 +6,23 @@ import string
 import urllib2
 import json
 from producttracker.models import TrackProduct, Product, StoreInventory
+from django.db.models import Sum
 
 # Create your views here.
 def index(request):
     return HttpResponse("Hello, world. You're at the poll index.")
 
 def product(request, product_id):
-	product = Product.objects.get(lcbo_id=product_id)
+	product = Product.objects.filter(lcbo_id=product_id).latest("updated_at")
 	inventory = StoreInventory.objects.filter(lcbo_id=product_id)
-	for store in inventory:
-		print store.id
-	return HttpResponse("Product updated: " + str(product.updated_at))
+	inventory_sum = StoreInventory.objects.aggregate(Sum('quantity')).get('quantity__sum')
+	updated = StoreInventory.objects.filter(lcbo_id=product_id).latest("updated_at")
+	return render(request, "html/product.html", {
+        "product" : product,
+        "inventory" : inventory,
+        "inventory_sum" : inventory_sum,
+        "updated" : updated,
+    })
 
 def update_inventory(request, product_id):
 	json_string = urllib2.urlopen('http://lcboapi.com/products/' + product_id + "/inventories?per_page=100")
