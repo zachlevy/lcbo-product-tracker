@@ -21,6 +21,7 @@ SECRET_KEY = 'c34relz7*qm=nuzgv30l@j=bo)vjrr)$-)x3ebn0v$$p1!z8_#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+IS_LOCAL = False
 
 TEMPLATE_DEBUG = True
 
@@ -78,9 +79,11 @@ USE_TZ = True
 # heroku
 # Parse database configuration from $DATABASE_URL
 import dj_database_url
-DATABASES = {
-    "default": dj_database_url.config(default='postgres://localhost'),
-}
+if not IS_LOCAL:
+    DATABASES = {
+        "default": dj_database_url.config(default='postgres://localhost'),
+    }
+
 #DATABASES['default'] =  dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()

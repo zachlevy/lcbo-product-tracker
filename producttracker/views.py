@@ -7,6 +7,7 @@ import urllib2
 import json
 from producttracker.models import TrackProduct, Product, StoreInventory
 from django.db.models import Sum
+from django.conf import settings
 
 # Create your views here.
 def index(request):
@@ -14,13 +15,19 @@ def index(request):
 
 def product(request, product_id):
 	product = Product.objects.filter(lcbo_id=product_id).latest("updated_at")
-	inventory = StoreInventory.objects.filter(lcbo_id=product_id).distinct('store_no')
-	inventory_sum = StoreInventory.objects.distinct('store_no').aggregate(Sum('quantity')).get('quantity__sum')
+	if settings.IS_LOCAL:
+		inventory = StoreInventory.objects.filter(lcbo_id=product_id)
+	else:
+		inventory = StoreInventory.objects.filter(lcbo_id=product_id).distinct('store_no')
+
+	total_inventory = 0
+	for store in inventory:
+		total_inventory += store.quantity
 	updated = StoreInventory.objects.filter(lcbo_id=product_id).latest("updated_at")
 	return render(request, "html/product.html", {
         "product" : product,
         "inventory" : inventory,
-        "inventory_sum" : inventory_sum,
+        "total_inventory" : total_inventory,
         "updated" : updated,
     })
 
