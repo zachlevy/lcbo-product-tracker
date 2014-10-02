@@ -16,7 +16,7 @@ def index(request):
 def product(request, product_id):
 	product = Product.objects.filter(lcbo_id=product_id).latest("updated_at")
 	if settings.IS_LOCAL:
-		inventory = StoreInventory.objects.filter(lcbo_id=product_id)
+		inventory = StoreInventory.objects.filter(lcbo_id=product_id).order_by('store_no')
 	else:
 		inventory = StoreInventory.objects.filter(lcbo_id=product_id).distinct('store_no')
 
